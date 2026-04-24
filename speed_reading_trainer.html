@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>英語耳🔛スイッチオン♪ Typewriter Trainer</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Poppins:wght@400;500;600&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<title>英語耳🔛スイッチオン♪ Speed Reading Trainer</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{--tf:#0ABAB5;--tfl:#E0F7F6;--tfm:#5DD5D1;--tfd:#078A86;--tfp:#F4FBFB;}
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -27,9 +27,6 @@ body{font-family:'Poppins',sans-serif;background:var(--tfp);min-height:100vh;}
   font-weight:700;letter-spacing:0.06em;margin-bottom:2px;}
 .htitle{font-family:'Nunito',sans-serif;font-weight:900;font-size:15px;
   color:#fff;line-height:1.28;text-shadow:0 1px 3px rgba(0,0,0,0.15);}
-.badge{display:inline-block;background:rgba(255,255,255,0.25);color:#fff;
-  font-size:9px;font-weight:700;padding:2px 7px;border-radius:10px;
-  font-family:'Nunito',sans-serif;letter-spacing:0.05em;margin-top:4px;}
 
 .tabs{display:flex;margin:1rem 1rem 0;background:rgba(10,186,181,0.1);border-radius:11px;padding:3px;}
 .tab{flex:1;padding:7px 8px;font-size:13px;font-weight:600;border:none;border-radius:9px;
@@ -86,45 +83,20 @@ body{font-family:'Poppins',sans-serif;background:var(--tfp);min-height:100vh;}
 .rbadge{font-size:11px;padding:3px 12px;border-radius:20px;background:var(--tfl);
   color:var(--tfd);font-weight:700;font-family:'Nunito',sans-serif;border:1px solid rgba(10,186,181,.3);}
 .rspd{font-size:11px;color:#bbb;}
-
-/* タイプライター表示エリア */
-.tdisplay{
-  font-family:'Courier Prime', 'Courier New', monospace;
-  font-size:15px;line-height:1.9;
-  padding:1rem 1.1rem;
-  background:var(--tfp);
-  border-radius:12px;margin-bottom:1rem;
-  min-height:170px;
-  border:1px solid rgba(10,186,181,.1);
-  white-space:pre-wrap;
-  word-break:break-word;
-  position:relative;
-}
-.ja-line{
-  font-family:'Poppins',sans-serif;
-  font-size:11px;
-  color:var(--tfd);
-  font-weight:600;
-  display:block;
-  line-height:1.6;
-}
-.en-line{
-  font-size:15px;
-  color:#1a1a1a;
-  display:block;
-  line-height:1.8;
-}
-/* カーソル点滅 */
-.cursor{
-  display:inline-block;
-  width:2px;height:1.1em;
-  background:var(--tf);
-  vertical-align:text-bottom;
-  margin-left:1px;
-  animation:blink .6s step-end infinite;
-}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
-
+.tdisplay{font-size:15px;line-height:2.1;padding:1rem 1.1rem;background:var(--tfp);
+  border-radius:12px;margin-bottom:1rem;min-height:170px;border:1px solid rgba(10,186,181,.1);}
+.ew{display:inline;opacity:0;transition:opacity .25s ease;color:#1a1a1a;}
+.ew.revealed{opacity:1;transition:none;}
+.ew.revealing{opacity:1;transition:opacity .25s ease;}
+.chunk-block{display:inline-block;margin:0 4px 4px 0;vertical-align:top;}
+.jw{display:block;font-size:12px;color:var(--tfd);opacity:0;
+  transition:opacity .25s ease;font-weight:700;line-height:1.5;}
+.jw.revealed{opacity:1;transition:none;}
+.jw.revealing{opacity:1;transition:opacity .25s ease;}
+.ew-block{display:block;font-size:15px;color:#1a1a1a;opacity:0;
+  transition:opacity .25s ease;line-height:1.6;}
+.ew-block.revealed{opacity:1;transition:none;}
+.ew-block.revealing{opacity:1;transition:opacity .25s ease;}
 .pgwrap{height:6px;background:var(--tfl);border-radius:3px;margin-bottom:1rem;overflow:hidden;}
 .pgbar{height:100%;background:linear-gradient(90deg,var(--tf) 0%,var(--tfm) 100%);border-radius:3px;transition:width .1s linear;}
 .ctrls{display:flex;gap:8px;}
@@ -223,7 +195,6 @@ body{font-family:'Poppins',sans-serif;background:var(--tfp);min-height:100vh;}
   <div class="htx">
     <p class="hsub">英語コーチ監修アプリ</p>
     <p class="htitle">英語耳🔛スイッチオン♪<br>Speed Reading Trainer</p>
-    <span class="badge">⌨️ Typewriter Ver.</span>
   </div>
 </div>
 
@@ -235,22 +206,22 @@ body{font-family:'Poppins',sans-serif;background:var(--tfp);min-height:100vh;}
 <div id="panel-s">
   <p class="slbl">モードを選ぶ</p>
   <div class="mgrid">
-    <div class="mc sel" id="mc0" onclick="selMode(0)"><p class="mi">📖</p><p class="mt">英文のみ</p><p class="ms">英語を1文字ずつ表示</p></div>
-    <div class="mc" id="mc1" onclick="selMode(1)"><p class="mi">🇯🇵→🇺🇸</p><p class="mt">日本語→英語</p><p class="ms">日本語の下に英語</p></div>
-    <div class="mc" id="mc2" onclick="selMode(2)"><p class="mi">✨</p><p class="mt">同時表示</p><p class="ms">日英を同時にタイプ</p></div>
+    <div class="mc sel" id="mc0" onclick="selMode(0)"><p class="mi">📖</p><p class="mt">英文のみ</p><p class="ms">すうーっと現れる</p></div>
+    <div class="mc" id="mc1" onclick="selMode(1)"><p class="mi">🇯🇵→🇺🇸</p><p class="mt">日本語→英語</p><p class="ms">日本語が先に出る</p></div>
+    <div class="mc" id="mc2" onclick="selMode(2)"><p class="mi">✨</p><p class="mt">同時表示</p><p class="ms">日英が一緒に出る</p></div>
   </div>
   <p class="slbl">英文を選ぶ</p>
   <div class="pgrid" id="pgrid"></div>
   <p class="slbl">ラウンド設定</p>
   <div class="sbox"><div id="srows"></div><button class="addb" onclick="addRound()">＋ ラウンドを追加</button></div>
-  <button class="gobtn" onclick="begin()">⌨️ トレーニング開始</button>
+  <button class="gobtn" onclick="begin()">🎵 トレーニング開始</button>
   <div style="height:1.5rem"></div>
 </div>
 
 <div id="panel-p" style="display:none;margin-top:1rem;">
   <div class="pwrap" id="pbox">
     <div class="rmeta"><span class="rbadge" id="rlabel">Round 1</span><span class="rspd" id="rspd"></span></div>
-    <div class="tdisplay" id="tdisplay"><span class="cursor"></span></div>
+    <div class="tdisplay" id="tdisplay"></div>
     <div class="pgwrap"><div class="pgbar" id="pbar" style="width:0%"></div></div>
     <div class="ctrls">
       <button class="cbtn" id="pbtn" onclick="togglePause()">一時停止</button>
@@ -464,14 +435,12 @@ const PRESETS=[
 ];
 
 let rounds=[{sec:60},{sec:50},{sec:40},{sec:30},{sec:20},{sec:15},{sec:10}];
-let selPreset=0,selModeIdx=0,chunks=[];
-let curRound=0,paused=false;
+let selPreset=0,selModeIdx=0,chunks=[],totalUnits=0;
+let curRound=0,rafId=null,paused=false;
 let roundStartTime=null,accumulatedTime=0,totalDuration=0;
-let finished=false,timerId=null;
-// タイプライター用
-let fullText='',displayedCount=0,totalChars=0;
+let finished=false,lastRevealedIdx=-1,lastRevealingIdx=-1;
 
-function selMode(i){selModeIdx=i;[0,1,2].forEach(j=>{document.getElementById('mc'+j).className='mc'+(j===i?' sel':'')+'';});}
+function selMode(i){selModeIdx=i;[0,1,2].forEach(j=>{document.getElementById('mc'+j).className='mc'+(j===i?' sel':'');});}
 function showTab(t){
   document.getElementById('ts').className='tab'+(t==='s'?' active':'');
   document.getElementById('tp').className='tab'+(t==='p'?' active':'');
@@ -492,30 +461,12 @@ function renderSpeeds(){
   rounds.forEach((r,i)=>{
     const wpm=Math.round(wc/(r.sec/60));
     const d=document.createElement('div');d.className='sr';
-    d.innerHTML='<span class="sl">Round '+(i+1)+'</span><input type="number" min="1" max="999" value="'+r.sec+'" onchange="rounds['+ i +'].sec=Math.max(1,parseInt(this.value)||1);renderSpeeds()"><span class="sw">'+ wpm +' wpm</span><button class="rmb" onclick="removeRound('+ i +')">✕</button>';
+    d.innerHTML='<span class="sl">Round '+(i+1)+'</span><input type="number" min="1" max="999" value="'+r.sec+'" onchange="rounds['+i+'].sec=Math.max(1,parseInt(this.value)||1);renderSpeeds()"><span class="sw">'+wpm+' wpm</span><button class="rmb" onclick="removeRound('+i+')">✕</button>';
     c.appendChild(d);
   });
 }
 function addRound(){const l=rounds[rounds.length-1];rounds.push({sec:Math.max(5,Math.round(l.sec*.75))});renderSpeeds();}
 function removeRound(i){if(rounds.length<=1)return;rounds.splice(i,1);renderSpeeds();}
-
-// テキスト構築：モードによって文字列を生成
-function buildFullText(){
-  const m=selModeIdx;
-  const c=PRESETS[selPreset].chunks;
-  if(m===0){
-    // 英文のみ：全チャンクをスペース区切りで連結
-    return c.map(ch=>ch.en).join(' ');
-  } else if(m===1){
-    // 日本語→英語：チャンクごとに日本語→改行→英語→改行
-    return c.map(ch=>ch.ja+'\n'+ch.en).join('\n');
-  } else {
-    // 同時：チャンクごとに日本語と英語を同時（交互に1文字ずつ）
-    // 実装：日本語行＋英語行をセットで表示
-    return c.map(ch=>ch.ja+'\n'+ch.en).join('\n');
-  }
-}
-
 function begin(){
   chunks=PRESETS[selPreset].chunks;curRound=0;showTab('p');
   document.getElementById('donebox').style.display='none';
@@ -527,135 +478,90 @@ function buildDots(){
   rounds.forEach((_,i)=>{const d=document.createElement('div');d.className='dot';d.id='d'+i;c.appendChild(d);});
 }
 function updateDots(){rounds.forEach((_,i)=>{const d=document.getElementById('d'+i);if(!d)return;d.className='dot'+(i<curRound?' done':i===curRound?' on':'');});}
-
 function launchRound(){
-  if(timerId)clearInterval(timerId);
-  paused=false;finished=false;accumulatedTime=0;displayedCount=0;
+  if(rafId)cancelAnimationFrame(rafId);
+  paused=false;finished=false;accumulatedTime=0;lastRevealedIdx=-1;lastRevealingIdx=-1;
   roundStartTime=performance.now();
   document.getElementById('pbtn').textContent='一時停止';
-
-  // テキスト構築
-  fullText=buildFullText();
-  totalChars=fullText.length;
   totalDuration=rounds[curRound].sec*1000;
-
+  totalUnits=selModeIdx===1?chunks.length*2:chunks.length;
   const wc=chunks.reduce((a,c)=>a+c.en.split(/\s+/).length,0);
   document.getElementById('rlabel').textContent='Round '+(curRound+1)+' / '+rounds.length;
   document.getElementById('rspd').textContent=rounds[curRound].sec+'秒 · '+wc+' words';
-  updateDots();
-
-  // 表示エリアをクリア
-  document.getElementById('tdisplay').innerHTML='<span class="cursor"></span>';
-  document.getElementById('pbar').style.width='0%';
-
-  // 先頭にスクロール
+  updateDots();renderTextDisplay();
+  // テキスト表示エリアの先頭に自動スクロール
+  const td=document.getElementById('tdisplay');
+  td.scrollTop=0;
   window.scrollTo({top:document.getElementById('pbox').offsetTop-10,behavior:'smooth'});
-
-  // タイプライタータイマー：1文字あたりのms
-  const msPerChar=totalDuration/totalChars;
-  timerId=setInterval(typeNextChar,Math.max(16,msPerChar));
+  document.getElementById('pbar').style.width='0%';
+  rafId=requestAnimationFrame(frame);
 }
-
-function typeNextChar(){
-  if(paused||finished)return;
-  if(displayedCount>=totalChars){
-    clearInterval(timerId);
-    finished=true;
-    renderFull();
-    document.getElementById('pbar').style.width='100%';
-    setTimeout(()=>{
-      if(curRound<rounds.length-1){curRound++;launchRound();}else showDone();
-    },600);
-    return;
-  }
-
-  // 複数文字をまとめて表示（スピードが速い場合）
-  const elapsed=performance.now()-roundStartTime+accumulatedTime;
-  const targetCount=Math.floor((elapsed/totalDuration)*totalChars);
-  const toAdd=Math.min(targetCount-displayedCount, 10);
-  if(toAdd>0){
-    displayedCount=Math.min(displayedCount+toAdd, totalChars);
+function renderTextDisplay(){
+  const c=document.getElementById('tdisplay');const m=selModeIdx;
+  if(m===0){
+    c.innerHTML=chunks.map((_,i)=>'<span class="ew" id="en'+i+'">'+chunks[i].en+' </span>').join('');
   } else {
-    displayedCount=Math.min(displayedCount+1, totalChars);
+    // 日本語→英語 or 同時：チャンクを縦ブロックで表示
+    c.innerHTML=chunks.map((_,i)=>
+      '<span class="chunk-block">'+
+        '<span class="jw" id="ja'+i+'">'+chunks[i].ja+'</span>'+
+        '<span class="ew-block" id="en'+i+'">'+chunks[i].en+'</span>'+
+      '</span>'
+    ).join(' ');
   }
-
-  renderDisplay();
-  const progress=displayedCount/totalChars;
+}
+function getElapsed(){return paused?accumulatedTime:accumulatedTime+(performance.now()-roundStartTime);}
+function frame(){
+  if(finished)return;
+  const progress=Math.min(getElapsed()/totalDuration,1);
+  const sweepPos=progress*totalUnits;
+  const revealedIdx=Math.floor(sweepPos)-1;
+  const revealingIdx=Math.floor(sweepPos);
+  if(revealedIdx!==lastRevealedIdx){for(let i=Math.max(0,lastRevealedIdx+1);i<=revealedIdx;i++)revealUnit(i,'revealed');lastRevealedIdx=revealedIdx;}
+  if(revealingIdx!==lastRevealingIdx){
+    if(lastRevealingIdx>=0&&lastRevealingIdx<=revealedIdx)revealUnit(lastRevealingIdx,'revealed');
+    if(revealingIdx<totalUnits)revealUnit(revealingIdx,'revealing');
+    lastRevealingIdx=revealingIdx;
+  }
   document.getElementById('pbar').style.width=Math.round(progress*100)+'%';
+  if(progress>=1){finished=true;
+    // 全チャンク表示
+    chunks.forEach((_,ci)=>{
+      const j=document.getElementById('ja'+ci);if(j)j.className='jw revealed';
+      const e=document.getElementById('en'+ci);
+      if(e)e.className=(selModeIdx===0?'ew':'ew-block')+' revealed';
+    });setTimeout(()=>{if(curRound<rounds.length-1){curRound++;launchRound();}else showDone();},500);return;}
+  rafId=requestAnimationFrame(frame);
 }
-
-function renderDisplay(){
+function revealUnit(u,cls){
   const m=selModeIdx;
-  const shown=fullText.slice(0,displayedCount);
-
-  let html='';
   if(m===0){
-    // 英文のみ：そのまま表示
-    html=escHtml(shown)+'<span class="cursor"></span>';
+    const e=document.getElementById('en'+u);if(e)e.className='ew '+cls;
+  } else if(m===1){
+    // 日本語→英語：JA先、EN後
+    const ci=Math.floor(u/2),isJA=u%2===0;
+    if(isJA){const e=document.getElementById('ja'+ci);if(e)e.className='jw '+cls;}
+    else{const e=document.getElementById('en'+ci);if(e)e.className='ew-block '+cls;}
   } else {
-    // 日本語→英語 / 同時：行ごとに色分け
-    const lines=shown.split('\n');
-    const totalLines=fullText.split('\n');
-    lines.forEach((line,li)=>{
-      const isJA=li%2===0; // 偶数行=日本語、奇数行=英語
-      const isLast=li===lines.length-1;
-      if(isJA){
-        html+='<span class="ja-line">'+escHtml(line)+(isLast?'<span class="cursor"></span>':'')+'</span>';
-      } else {
-        html+='<span class="en-line">'+escHtml(line)+(isLast?'<span class="cursor"></span>':'')+'</span>';
-      }
-    });
+    // 同時：JA+EN同時
+    const j=document.getElementById('ja'+u);if(j)j.className='jw '+cls;
+    const e=document.getElementById('en'+u);if(e)e.className='ew-block '+cls;
   }
-  document.getElementById('tdisplay').innerHTML=html;
 }
-
-function renderFull(){
-  const m=selModeIdx;
-  let html='';
-  if(m===0){
-    html=escHtml(fullText);
-  } else {
-    const lines=fullText.split('\n');
-    lines.forEach((line,li)=>{
-      const isJA=li%2===0;
-      html+=isJA
-        ?'<span class="ja-line">'+escHtml(line)+'</span>'
-        :'<span class="en-line">'+escHtml(line)+'</span>';
-    });
-  }
-  document.getElementById('tdisplay').innerHTML=html;
-}
-
-function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-
 function togglePause(){
-  if(!paused){
-    paused=true;
-    accumulatedTime+=performance.now()-roundStartTime;
-    document.getElementById('pbtn').textContent='再開';
-  } else {
-    paused=false;
-    roundStartTime=performance.now();
-    document.getElementById('pbtn').textContent='一時停止';
-  }
+  if(!paused){paused=true;accumulatedTime+=performance.now()-roundStartTime;document.getElementById('pbtn').textContent='再開';}
+  else{paused=false;roundStartTime=performance.now();document.getElementById('pbtn').textContent='一時停止';rafId=requestAnimationFrame(frame);}
 }
-function skipRound(){
-  if(timerId)clearInterval(timerId);
-  if(curRound<rounds.length-1){curRound++;launchRound();}else showDone();
-}
-function stopAll(){if(timerId)clearInterval(timerId);showTab('s');}
+function skipRound(){if(rafId)cancelAnimationFrame(rafId);if(curRound<rounds.length-1){curRound++;launchRound();}else showDone();}
+function stopAll(){if(rafId)cancelAnimationFrame(rafId);showTab('s');}
 function showDone(){
-  if(timerId)clearInterval(timerId);updateDots();
+  if(rafId)cancelAnimationFrame(rafId);updateDots();
   document.getElementById('pbox').style.display='none';
   document.getElementById('donebox').style.display='block';
   const wc=chunks.reduce((a,c)=>a+c.en.split(/\s+/).length,0);
   document.getElementById('donesub').textContent=rounds.length+'ラウンド完了！最終スピード '+rounds[rounds.length-1].sec+'秒 / '+wc+' words';
 }
-function restart(){
-  document.getElementById('donebox').style.display='none';
-  document.getElementById('pbox').style.display='block';
-  curRound=0;buildDots();launchRound();
-}
+function restart(){document.getElementById('donebox').style.display='none';document.getElementById('pbox').style.display='block';curRound=0;buildDots();launchRound();}
 
 buildPresets();renderSpeeds();
 </script>
