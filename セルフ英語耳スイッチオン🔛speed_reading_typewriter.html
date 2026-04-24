@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>英語耳🔛スイッチオン♪ Typewriter Trainer</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Poppins:wght@400;500;600&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--tf:#0ABAB5;--tfl:#E0F7F6;--tfm:#5DD5D1;--tfd:#078A86;--tfp:#F4FBFB;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Poppins',sans-serif;background:var(--tfp);min-height:100vh;}
+.app{max-width:480px;margin:0 auto;padding-bottom:2rem;width:100%;}
+
+.hdr{background:linear-gradient(130deg,#089994 0%,var(--tf) 45%,var(--tfm) 100%);
+  padding:1.1rem 1.3rem 1.2rem;display:flex;align-items:center;gap:13px;
+  position:relative;overflow:hidden;}
+.hdr::before{content:'';position:absolute;top:-28px;right:-24px;width:100px;height:100px;
+  background:rgba(255,255,255,0.13);border-radius:50%;}
+.hdr::after{content:'';position:absolute;bottom:-18px;left:40%;width:64px;height:64px;
+  background:rgba(255,255,255,0.08);border-radius:50%;}
+.av{width:60px;height:60px;border-radius:50%;border:2.5px solid rgba(255,255,255,0.92);
+  overflow:hidden;flex-shrink:0;box-shadow:0 3px 14px rgba(0,0,0,0.2);
+  position:relative;z-index:1;background:#fff;}
+.av img{width:100%;height:100%;object-fit:cover;object-position:50% 10%;}
+.htx{position:relative;z-index:1;}
+.hsub{font-size:10px;color:rgba(255,255,255,0.85);font-family:'Nunito',sans-serif;
+  font-weight:700;letter-spacing:0.06em;margin-bottom:2px;}
+.htitle{font-family:'Nunito',sans-serif;font-weight:900;font-size:15px;
+  color:#fff;line-height:1.28;text-shadow:0 1px 3px rgba(0,0,0,0.15);}
+.badge{display:inline-block;background:rgba(255,255,255,0.25);color:#fff;
+  font-size:9px;font-weight:700;padding:2px 7px;border-radius:10px;
+  font-family:'Nunito',sans-serif;letter-spacing:0.05em;margin-top:4px;}
+
+.tabs{display:flex;margin:1rem 1rem 0;background:rgba(10,186,181,0.1);border-radius:11px;padding:3px;}
+.tab{flex:1;padding:7px 8px;font-size:13px;font-weight:600;border:none;border-radius:9px;
+  cursor:pointer;background:transparent;color:var(--tfd);font-family:'Poppins',sans-serif;transition:all .2s;}
+.tab.active{background:var(--tf);color:#fff;box-shadow:0 2px 8px rgba(10,186,181,.35);}
+
+.slbl{font-size:10.5px;font-weight:700;color:var(--tfd);letter-spacing:.07em;text-transform:uppercase;
+  margin:1rem 1rem .45rem;display:flex;align-items:center;gap:5px;}
+.slbl::after{content:'';flex:1;height:1px;background:rgba(10,186,181,.18);}
+
+.mgrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin:0 1rem;}
+.mc{padding:10px 7px;background:#fff;border:1.5px solid rgba(10,186,181,.2);border-radius:12px;
+  cursor:pointer;text-align:center;transition:all .2s;}
+.mc:hover,.mc.sel{border-color:var(--tf);background:var(--tfl);}
+.mi{font-size:18px;margin-bottom:3px;}
+.mt{font-size:11px;font-weight:700;color:#333;font-family:'Nunito',sans-serif;}
+.mc.sel .mt{color:var(--tfd);}
+.ms{font-size:10px;color:#aaa;line-height:1.3;margin-top:2px;}
+.mc.sel .ms{color:var(--tfd);opacity:.8;}
+
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:0 1rem;}
+.pc{padding:10px 12px;background:#fff;border:1.5px solid rgba(10,186,181,.2);
+  border-radius:12px;cursor:pointer;transition:all .2s;}
+.pc:hover,.pc.sel{border-color:var(--tf);background:var(--tfl);}
+.pt{font-size:12px;font-weight:700;color:#333;font-family:'Nunito',sans-serif;margin-bottom:2px;}
+.pc.sel .pt{color:var(--tfd);}
+.ps{font-size:11px;color:#aaa;}
+.pc.sel .ps{color:var(--tf);}
+
+.sbox{background:#fff;border:1.5px solid rgba(10,186,181,.2);border-radius:13px;
+  padding:.9rem 1rem;margin:0 1rem;}
+.sr{display:grid;grid-template-columns:66px 1fr 64px 24px;align-items:center;gap:7px;margin-bottom:7px;}
+.sr .sl{font-size:12px;color:#666;font-weight:600;}
+.sr input{font-size:13px;padding:5px 7px;border:1.5px solid rgba(10,186,181,.3);border-radius:8px;
+  background:var(--tfp);color:#333;text-align:center;width:100%;outline:none;font-family:'Poppins',sans-serif;}
+.sr input:focus{border-color:var(--tf);}
+.sr .sw{font-size:10px;color:var(--tf);font-weight:700;}
+.rmb{font-size:13px;cursor:pointer;background:none;border:none;color:#ddd;}
+.rmb:hover{color:#f87171;}
+.addb{width:100%;font-size:12px;color:var(--tf);background:none;border:1.5px dashed rgba(10,186,181,.35);
+  border-radius:8px;padding:6px;cursor:pointer;margin-top:4px;font-weight:600;font-family:'Poppins',sans-serif;}
+.addb:hover{background:var(--tfl);}
+
+.gobtn{display:block;width:calc(100% - 2rem);margin:1rem 1rem 0;padding:13px;font-size:15px;
+  font-weight:800;background:linear-gradient(135deg,var(--tf) 0%,var(--tfm) 100%);
+  border:none;border-radius:14px;cursor:pointer;color:#fff;font-family:'Nunito',sans-serif;
+  letter-spacing:.02em;box-shadow:0 4px 14px rgba(10,186,181,.38);transition:transform .15s,box-shadow .15s;}
+.gobtn:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(10,186,181,.44);}
+.gobtn:active{transform:scale(.98);}
+
+.pwrap{background:#fff;border:1.5px solid rgba(10,186,181,.2);border-radius:15px;
+  padding:1.2rem;margin:0 1rem;}
+.rmeta{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;}
+.rbadge{font-size:11px;padding:3px 12px;border-radius:20px;background:var(--tfl);
+  color:var(--tfd);font-weight:700;font-family:'Nunito',sans-serif;border:1px solid rgba(10,186,181,.3);}
+.rspd{font-size:11px;color:#bbb;}
+
+/* タイプライター表示エリア */
+.tdisplay{
+  font-family:'Courier Prime', 'Courier New', monospace;
+  font-size:15px;line-height:1.9;
+  padding:1rem 1.1rem;
+  background:var(--tfp);
+  border-radius:12px;margin-bottom:1rem;
+  min-height:170px;
+  border:1px solid rgba(10,186,181,.1);
+  white-space:pre-wrap;
+  word-break:break-word;
+  position:relative;
+}
+.ja-line{
+  font-family:'Poppins',sans-serif;
+  font-size:11px;
+  color:var(--tfd);
+  font-weight:600;
+  display:block;
+  line-height:1.6;
+}
+.en-line{
+  font-size:15px;
+  color:#1a1a1a;
+  display:block;
+  line-height:1.8;
+}
+/* カーソル点滅 */
+.cursor{
+  display:inline-block;
+  width:2px;height:1.1em;
+  background:var(--tf);
+  vertical-align:text-bottom;
+  margin-left:1px;
+  animation:blink .6s step-end infinite;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+.pgwrap{height:6px;background:var(--tfl);border-radius:3px;margin-bottom:1rem;overflow:hidden;}
+.pgbar{height:100%;background:linear-gradient(90deg,var(--tf) 0%,var(--tfm) 100%);border-radius:3px;transition:width .1s linear;}
+.ctrls{display:flex;gap:8px;}
+.cbtn{flex:1;padding:8px;font-size:12px;font-weight:600;border:1.5px solid rgba(10,186,181,.3);
+  border-radius:10px;cursor:pointer;background:#fff;color:var(--tfd);font-family:'Poppins',sans-serif;transition:all .15s;}
+.cbtn:hover{background:var(--tfl);border-color:var(--tf);}
+#pbtn{background:var(--tfl);}
+.dots{display:flex;gap:5px;margin-top:1rem;}
+.dot{flex:1;height:4px;border-radius:2px;background:rgba(10,186,181,.15);transition:background .3s;}
+.dot.done{background:var(--tfm);}
+.dot.on{background:var(--tf);box-shadow:0 0 6px rgba(10,186,181,.45);}
+
+.donecard{background:#fff;border:1.5px solid rgba(10,186,181,.2);border-radius:15px;
+  padding:2.5rem 1.5rem;text-align:center;margin:0 1rem;display:none;}
+.donebig{font-size:22px;font-weight:900;color:var(--tf);font-family:'Nunito',sans-serif;margin-bottom:8px;}
+.donesub{font-size:13px;color:#aaa;margin-bottom:1.2rem;}
+.dav{width:68px;height:68px;border-radius:50%;border:2.5px solid var(--tf);
+  overflow:hidden;margin:0 auto 1rem;box-shadow:0 4px 14px rgba(10,186,181,.22);}
+.dav img{width:100%;height:100%;object-fit:cover;object-position:50% 10%;}
+
+/* ===== PC レスポンシブ ===== */
+@media (min-width: 600px) {
+  .app { max-width: 720px; }
+  .htitle { font-size: 20px; }
+  .hsub { font-size: 13px; }
+  .av { width: 80px; height: 80px; }
+  .hdr { padding: 1.4rem 2rem 1.5rem; gap: 18px; }
+  .badge { font-size: 11px; padding: 3px 10px; }
+  .tabs { margin: 1.2rem 1.5rem 0; }
+  .tab { font-size: 15px; padding: 9px 12px; }
+  .slbl { font-size: 13px; margin: 1.3rem 1.5rem .6rem; }
+  .mgrid { margin: 0 1.5rem; gap: 10px; }
+  .mc { padding: 14px 10px; border-radius: 14px; }
+  .mi { font-size: 26px; margin-bottom: 5px; }
+  .mt { font-size: 13px; }
+  .ms { font-size: 12px; }
+  .pgrid { margin: 0 1.5rem; gap: 10px; }
+  .pc { padding: 13px 16px; border-radius: 14px; }
+  .pt { font-size: 14px; }
+  .ps { font-size: 12px; }
+  .sbox { margin: 0 1.5rem; padding: 1.1rem 1.3rem; }
+  .sr { grid-template-columns: 80px 1fr 80px 28px; gap: 10px; }
+  .sr .sl { font-size: 14px; }
+  .sr input { font-size: 15px; padding: 6px 10px; }
+  .sr .sw { font-size: 12px; }
+  .gobtn { width: calc(100% - 3rem); margin: 1.3rem 1.5rem 0; padding: 15px; font-size: 17px; border-radius: 16px; }
+  .pwrap { margin: 0 1.5rem; padding: 1.5rem; border-radius: 18px; }
+  .rbadge { font-size: 13px; padding: 4px 16px; }
+  .rspd { font-size: 13px; }
+  .tdisplay { font-size: 18px; line-height: 2.1; padding: 1.3rem 1.5rem; min-height: 220px; border-radius: 14px; }
+  .pgwrap { height: 8px; border-radius: 4px; margin-bottom: 1.2rem; }
+  .ctrls { gap: 10px; }
+  .cbtn { padding: 10px; font-size: 14px; border-radius: 12px; }
+  .dots { gap: 7px; margin-top: 1.2rem; }
+  .dot { height: 5px; border-radius: 3px; }
+  .donecard { margin: 0 1.5rem; padding: 3rem 2rem; border-radius: 18px; }
+  .donebig { font-size: 28px; }
+  .donesub { font-size: 15px; }
+  .dav { width: 88px; height: 88px; }
+  .ja-line { font-size: 14px; }
+  .en-line { font-size: 18px; }
+}
+
+@media (min-width: 900px) {
+  .app { max-width: 860px; }
+  .htitle { font-size: 24px; }
+  .av { width: 90px; height: 90px; }
+  .hdr { padding: 1.6rem 2.5rem 1.7rem; gap: 22px; }
+  .tabs { margin: 1.5rem 2rem 0; }
+  .tab { font-size: 16px; padding: 10px 14px; }
+  .slbl { font-size: 14px; margin: 1.5rem 2rem .7rem; }
+  .mgrid { margin: 0 2rem; gap: 12px; }
+  .mc { padding: 18px 12px; }
+  .mi { font-size: 30px; }
+  .mt { font-size: 14px; }
+  .ms { font-size: 12px; }
+  .pgrid { margin: 0 2rem; gap: 12px; }
+  .pc { padding: 16px 20px; }
+  .pt { font-size: 15px; }
+  .sbox { margin: 0 2rem; }
+  .gobtn { width: calc(100% - 4rem); margin: 1.5rem 2rem 0; padding: 17px; font-size: 19px; }
+  .pwrap { margin: 0 2rem; padding: 1.8rem; }
+  .tdisplay { font-size: 20px; line-height: 2.2; padding: 1.5rem 1.8rem; min-height: 260px; }
+  .cbtn { padding: 12px; font-size: 15px; }
+  .donecard { margin: 0 2rem; }
+  .donebig { font-size: 32px; }
+  .ja-line { font-size: 16px; }
+  .en-line { font-size: 20px; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="hdr">
+  <div class="av"><img id="avimg" alt="コーチ"></div>
+  <div class="htx">
+    <p class="hsub">英語コーチ監修アプリ</p>
+    <p class="htitle">英語耳🔛スイッチオン♪<br>Speed Reading Trainer</p>
+    <span class="badge">⌨️ Typewriter Ver.</span>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" id="ts" onclick="showTab('s')">設定</button>
+  <button class="tab" id="tp" onclick="showTab('p')">トレーニング</button>
+</div>
+
+<div id="panel-s">
+  <p class="slbl">モードを選ぶ</p>
+  <div class="mgrid">
+    <div class="mc sel" id="mc0" onclick="selMode(0)"><p class="mi">📖</p><p class="mt">英文のみ</p><p class="ms">英語を1文字ずつ表示</p></div>
+    <div class="mc" id="mc1" onclick="selMode(1)"><p class="mi">🇯🇵→🇺🇸</p><p class="mt">日本語→英語</p><p class="ms">日本語の下に英語</p></div>
+    <div class="mc" id="mc2" onclick="selMode(2)"><p class="mi">✨</p><p class="mt">同時表示</p><p class="ms">日英を同時にタイプ</p></div>
+  </div>
+  <p class="slbl">英文を選ぶ</p>
+  <div class="pgrid" id="pgrid"></div>
+  <p class="slbl">ラウンド設定</p>
+  <div class="sbox"><div id="srows"></div><button class="addb" onclick="addRound()">＋ ラウンドを追加</button></div>
+  <button class="gobtn" onclick="begin()">⌨️ トレーニング開始</button>
+  <div style="height:1.5rem"></div>
+</div>
+
+<div id="panel-p" style="display:none;margin-top:1rem;">
+  <div class="pwrap" id="pbox">
+    <div class="rmeta"><span class="rbadge" id="rlabel">Round 1</span><span class="rspd" id="rspd"></span></div>
+    <div class="tdisplay" id="tdisplay"><span class="cursor"></span></div>
+    <div class="pgwrap"><div class="pgbar" id="pbar" style="width:0%"></div></div>
+    <div class="ctrls">
+      <button class="cbtn" id="pbtn" onclick="togglePause()">一時停止</button>
+      <button class="cbtn" onclick="skipRound()">次へ →</button>
+      <button class="cbtn" onclick="stopAll()">終了</button>
+    </div>
+    <div class="dots" id="dotrow"></div>
+  </div>
+  <div class="donecard" id="donebox">
+    <div class="dav"><img id="avimg2" alt="コーチ"></div>
+    <p class="donebig">🎉 すばらしい！完了！</p>
+    <p class="donesub" id="donesub"></p>
+    <button class="gobtn" onclick="restart()" style="width:auto;display:inline-block;padding:10px 32px;margin:0 auto;">もう一度</button>
+  </div>
+  <div style="height:1rem"></div>
+</div>
+</div>
+
+<script>
+const AV='data:image/png;base64,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';
+document.getElementById('avimg').src=AV;
+document.getElementById('avimg2').src=AV;
+
+const PRESETS=[
+  {title:"Brain & Prediction",sub:"脳科学・予測処理",chunks:[
+    {en:"The human brain",ja:"人間の脳は"},
+    {en:"is a remarkable organ",ja:"すばらしい器官です"},
+    {en:"that constantly processes information",ja:"絶えず情報を処理している"},
+    {en:"from the world around us.",ja:"私たちを取り巻く世界から。"},
+    {en:"When we read text,",ja:"文章を読むとき、"},
+    {en:"our eyes do not move smoothly",ja:"目は滑らかには動かず"},
+    {en:"across the page.",ja:"ページ上を。"},
+    {en:"Instead, they make rapid jumps",ja:"代わりに素早いジャンプをします"},
+    {en:"called saccades,",ja:"サッカードと呼ばれる"},
+    {en:"pausing briefly on groups of words.",ja:"単語のまとまりで短く止まりながら。"},
+    {en:"During these pauses,",ja:"この停止の間に"},
+    {en:"the brain works to extract meaning,",ja:"脳は意味を引き出そうとします、"},
+    {en:"predicting what comes next",ja:"次に来るものを予測しながら"},
+    {en:"based on context and prior knowledge.",ja:"文脈と既知の知識をもとに。"},
+    {en:"This predictive processing",ja:"この予測的な処理が"},
+    {en:"is fundamental to how we understand language.",ja:"言語理解の根本です。"},
+    {en:"Research shows that skilled readers",ja:"熟練した読者は"},
+    {en:"can anticipate upcoming words",ja:"次の単語を予測できます"},
+    {en:"before they appear,",ja:"それが現れる前に、"},
+    {en:"allowing them to comprehend text",ja:"テキストを理解することを可能にし"},
+    {en:"much faster than novice readers.",ja:"初心者よりずっと速く。"},
+    {en:"By training ourselves to read at higher speeds,",ja:"高速で読む訓練をすることで"},
+    {en:"we can strengthen these neural pathways",ja:"神経経路を強化できます"},
+    {en:"and improve our ability",ja:"そして能力を高められます"},
+    {en:"to process spoken language as well.",ja:"話し言葉を処理する能力も。"},
+    {en:"The strong connection",ja:"強い結びつきがあります"},
+    {en:"between visual reading speed",ja:"視覚的な読書速度と"},
+    {en:"and listening comprehension",ja:"リスニング理解力の間に"},
+    {en:"is well established in cognitive neuroscience.",ja:"認知神経科学において確立されています。"},
+    {en:"When the brain becomes accustomed",ja:"脳が慣れると"},
+    {en:"to processing text rapidly,",ja:"テキストを速く処理することに、"},
+    {en:"it also becomes better",ja:"同時に上手くなります"},
+    {en:"at understanding fast speech in a second language,",ja:"第二言語の速い発話を理解することも、"},
+    {en:"because both skills rely",ja:"なぜなら両方のスキルが依存しているから"},
+    {en:"on the same predictive mechanisms",ja:"同じ予測メカニズムに"},
+    {en:"built deep in our minds.",ja:"私たちの心の奥深くに組み込まれた。"},
+    {en:"Regular practice with accelerated reading",ja:"加速読みの定期的な練習は"},
+    {en:"gradually rewires the brain over time,",ja:"時間をかけて徐々に脳を再配線し、"},
+    {en:"creating lasting improvements",ja:"持続的な改善をもたらします"},
+    {en:"that carry over naturally",ja:"自然に波及する"},
+    {en:"into everyday listening",ja:"日常のリスニングへと"},
+    {en:"and real conversations with native speakers.",ja:"ネイティブとの実際の会話へと。"}
+  ]},
+  {title:"Travel & Freedom",sub:"旅・自由な生き方",chunks:[
+    {en:"There is something deeply liberating",ja:"深く解放的なものがあります"},
+    {en:"about waking up",ja:"目覚めることには"},
+    {en:"in a city you have never visited before.",ja:"一度も訪れたことのない街で。"},
+    {en:"The streets feel alive with possibility,",ja:"通りは可能性に満ちて生き生きしています、"},
+    {en:"and every corner holds a story",ja:"そしてすべての角に物語が"},
+    {en:"waiting to be discovered.",ja:"発見されるのを待っています。"},
+    {en:"Many people dream of living this way permanently,",ja:"多くの人がこのような生き方を永続的に夢見ています、"},
+    {en:"building a life that moves freely with them",ja:"自由に一緒に動いていく人生を築きながら"},
+    {en:"rather than anchoring them to one fixed place.",ja:"一つの決まった場所に縛りつけるのではなく。"},
+    {en:"With the rise of remote work",ja:"リモートワークの台頭とともに"},
+    {en:"and powerful digital communication tools,",ja:"強力なデジタルコミュニケーションツールの、"},
+    {en:"this dream has become more achievable than ever",ja:"この夢はかつてないほど実現可能になりました"},
+    {en:"for motivated people all around the world.",ja:"世界中のやる気のある人々にとって。"},
+    {en:"Professionals in many different fields",ja:"多くの異なる分野のプロフェッショナルが"},
+    {en:"can now earn a comfortable living from anywhere",ja:"今やどこからでも快適な生活費を稼げます"},
+    {en:"with just a reliable internet connection.",ja:"信頼できるインターネット接続さえあれば。"},
+    {en:"Language skills play a truly crucial role",ja:"語学力は本当に重要な役割を果たします"},
+    {en:"in making this lifestyle sustainable long-term.",ja:"このライフスタイルを長期的に持続可能にする上で。"},
+    {en:"When you can communicate warmly with locals",ja:"現地の人々と温かくコミュニケーションできるとき"},
+    {en:"in their own language,",ja:"彼らの言葉で、"},
+    {en:"doors open wide",ja:"扉が大きく開きます"},
+    {en:"that remain firmly closed",ja:"固く閉じたままの"},
+    {en:"to those who rely solely on translation apps.",ja:"翻訳アプリだけに頼る人には。"},
+    {en:"Even a basic knowledge of the local tongue",ja:"現地の言葉の基本的な知識だけでも"},
+    {en:"creates real warmth and genuine human connection",ja:"本当の温かさと真の人間的なつながりを生み出します"},
+    {en:"that transforms a trip",ja:"旅を変えるほどの"},
+    {en:"from simple tourism",ja:"単純な観光から"},
+    {en:"into deep and meaningful cultural immersion.",ja:"深く意味のある文化的没入へと。"},
+    {en:"The whole world becomes your home,",ja:"世界全体があなたの故郷になります、"},
+    {en:"and every new destination teaches you something",ja:"そして新しい目的地ごとに何かを教えてくれます"},
+    {en:"unexpected about yourself",ja:"自分自身について予期せぬことを"},
+    {en:"and the infinite variety of human experience.",ja:"そして無限に多様な人間の経験について。"}
+  ]},
+  {title:"Learning & Growth",sub:"学習・成長",chunks:[
+    {en:"Learning a new skill as an adult",ja:"大人として新しいスキルを学ぶことは"},
+    {en:"is one of the most rewarding challenges",ja:"最もやりがいのある挑戦の一つです"},
+    {en:"a person can take on.",ja:"人が取り組める。"},
+    {en:"Unlike young children,",ja:"幼い子どもたちとは異なり、"},
+    {en:"who absorb information almost effortlessly",ja:"情報をほぼ難なく吸収する"},
+    {en:"through play and daily repetition,",ja:"遊びと毎日の繰り返しを通して、"},
+    {en:"adults bring a very different set of tools",ja:"大人は非常に異なるツールセットを持ち込みます"},
+    {en:"to the learning process.",ja:"学習プロセスに。"},
+    {en:"We have decades of existing knowledge",ja:"私たちは何十年もの知識を持っています"},
+    {en:"to connect new information to,",ja:"新しい情報をつなげるための、"},
+    {en:"and a clear sense of personal purpose",ja:"そして明確な個人的な目的意識も"},
+    {en:"that keeps us strongly motivated",ja:"私たちのやる気を強く保ち続ける"},
+    {en:"through difficult moments.",ja:"困難な瞬間を通じても。"},
+    {en:"However, adults also face unique and very real obstacles.",ja:"しかし大人はユニークで現実的な障害にも直面します。"},
+    {en:"Fear of judgment",ja:"評価への恐れや"},
+    {en:"and the pressure to succeed quickly",ja:"素早く成功しなければというプレッシャーが"},
+    {en:"can make early mistakes feel",ja:"初期のミスを感じさせることがあります"},
+    {en:"far more significant than they truly are.",ja:"実際よりもはるかに重大なものとして。"},
+    {en:"The most effective adult learners",ja:"最も効果的な成人学習者は"},
+    {en:"treat every single error as useful data",ja:"すべてのミスを有用なデータとして扱います"},
+    {en:"rather than a personal failure.",ja:"個人的な失敗としてではなく。"},
+    {en:"Each mistake reveals a gap in understanding",ja:"各ミスは理解のギャップを明らかにします"},
+    {en:"that, once carefully addressed,",ja:"一度丁寧に対処されると、"},
+    {en:"becomes a permanent strength.",ja:"永続的な強みとなります。"},
+    {en:"Language learning follows this same pattern closely.",ja:"語学学習もこの同じパターンに従います。"},
+    {en:"Listening before speaking,",ja:"話す前に聞くこと、"},
+    {en:"noticing patterns before naming rules,",ja:"ルールを名付ける前にパターンに気づくこと、"},
+    {en:"and immersing yourself in authentic real content",ja:"そして本物のコンテンツに没入すること"},
+    {en:"all activate the brain's",ja:"すべてが脳の"},
+    {en:"natural and powerful acquisition systems.",ja:"自然で強力な習得システムを活性化します。"},
+    {en:"Progress may feel invisible for weeks",ja:"進歩は何週間も見えないかもしれません"},
+    {en:"before suddenly becoming obvious.",ja:"突然明らかになる前に。"},
+    {en:"Trust the process,",ja:"プロセスを信頼し、"},
+    {en:"stay curious every single day,",ja:"毎日好奇心を持ち続けてください、"},
+    {en:"and your brain will do what it was designed to do: grow.",ja:"そしてあなたの脳は設計された通りのことをします：成長すること。"}
+  ]},
+  {title:"Nature & Science",sub:"自然・サイエンス",chunks:[
+    {en:"The ocean covers",ja:"海は覆っています"},
+    {en:"more than seventy percent",ja:"七十パーセント以上を"},
+    {en:"of our entire planet's surface,",ja:"私たちの惑星全体の表面の、"},
+    {en:"yet we have carefully explored",ja:"しかし私たちが注意深く探索したのは"},
+    {en:"less than twenty percent of it.",ja:"その二十パーセント未満です。"},
+    {en:"Beneath the waves",ja:"波の下には"},
+    {en:"lies an entire hidden world",ja:"完全な隠れた世界が広がっています"},
+    {en:"of towering mountains, incredibly deep valleys,",ja:"そびえる山々、信じられないほど深い谷、"},
+    {en:"and vast open plains",ja:"そして広大な平原の"},
+    {en:"that easily rival anything found on dry land above.",ja:"陸上のどんなものにも容易に匹敵する。"},
+    {en:"Creatures of extraordinary shape and biological function",ja:"並外れた形と生物学的機能を持つ生き物たちが"},
+    {en:"live their whole lives in total darkness,",ja:"完全な暗闇の中で一生を生きています、"},
+    {en:"sustained entirely by chemical energy",ja:"完全に化学エネルギーで生かされています"},
+    {en:"rather than sunlight from above.",ja:"上からの日光ではなく。"},
+    {en:"Some truly fascinating species produce their own light",ja:"本当に魅力的な一部の種は自らの光を生み出します"},
+    {en:"through a natural process called bioluminescence,",ja:"生物発光と呼ばれる自然のプロセスを通じて、"},
+    {en:"turning the deep ocean",ja:"深海を変えています"},
+    {en:"into a breathtaking slow-motion light show",ja:"息をのむようなスローモーションの光のショーへと"},
+    {en:"visible only to those brave enough to venture far below.",ja:"はるか下まで冒険する勇気のある人にしか見えない。"},
+    {en:"Scientists who dedicate their careers to this hidden world",ja:"この隠れた世界にキャリアを捧げる科学者たちは"},
+    {en:"are constantly revising their understanding",ja:"常に理解を見直しています"},
+    {en:"of how complex life can exist and thrive",ja:"複雑な生命がどのように存在し繁栄できるかについての"},
+    {en:"under such extreme and unforgiving conditions.",ja:"このような極端で過酷な条件下で。"},
+    {en:"Their remarkable discoveries carry broad implications",ja:"彼らの注目すべき発見は広範な示唆をもたらします"},
+    {en:"far beyond marine biology alone.",ja:"海洋生物学だけをはるかに超えた。"},
+    {en:"Understanding how tiny organisms survive",ja:"小さな生物がどのように生き残るかを理解することは"},
+    {en:"without any light or warmth",ja:"光も温かさもなく"},
+    {en:"helps us begin imagining what life might look like",ja:"生命がどのように見えるかを想像し始める助けになります"},
+    {en:"on distant planets,",ja:"遠い惑星上で、"},
+    {en:"where conditions bear very little resemblance",ja:"条件がほとんど似ていない"},
+    {en:"to anything we know here on Earth.",ja:"ここ地球上で私たちが知っているどんなものにも。"},
+    {en:"Every deep-sea expedition",ja:"すべての深海探査が"},
+    {en:"returns with species never seen before,",ja:"これまで見たことのない種を持ち帰り、"},
+    {en:"reminding us that biological knowledge",ja:"生物学的知識が"},
+    {en:"is still expanding.",ja:"まだ広がり続けていることを思い出させます。"}
+  ]},
+  {title:"Communication",sub:"コミュニケーション",chunks:[
+    {en:"Every conversation",ja:"すべての会話は"},
+    {en:"is a small but meaningful act of courage.",ja:"小さくも意味深い勇気の行為です。"},
+    {en:"When we speak,",ja:"私たちが話すとき、"},
+    {en:"we offer a real piece of ourselves to another person",ja:"私たちは本当の自分の一部を別の人に差し出します"},
+    {en:"and hope it is received with care.",ja:"そしてそれが大切に受け取られることを願います。"},
+    {en:"This vulnerability is especially pronounced",ja:"この脆弱性は特に顕著です"},
+    {en:"when communicating in a second language,",ja:"第二言語でコミュニケーションするときに、"},
+    {en:"where every sentence requires rapid real-time decisions",ja:"すべての文において素早いリアルタイムの判断が必要です"},
+    {en:"about grammar, vocabulary, tone,",ja:"文法、語彙、トーン、"},
+    {en:"and cultural nuance.",ja:"そして文化的ニュアンスについての。"},
+    {en:"It is no wonder",ja:"不思議ではありません"},
+    {en:"that many learners feel confident",ja:"多くの学習者が自信を感じるのも"},
+    {en:"reading and writing in their target language",ja:"目標言語での読み書きには"},
+    {en:"long before they feel ready to speak it aloud.",ja:"声に出して話す準備ができたと感じるずっと前から。"},
+    {en:"Yet speaking is exactly where real transformation happens.",ja:"しかし話すことこそが本当の変容が起きる場所です。"},
+    {en:"The moment you begin expressing",ja:"表現し始めた瞬間に"},
+    {en:"your actual thoughts and feelings",ja:"あなたの実際の思いや感情を"},
+    {en:"in another language,",ja:"別の言語で、"},
+    {en:"something important shifts deep in the brain.",ja:"脳の奥深くで何か重要なものが変わります。"},
+    {en:"You are no longer only decoding someone else's meaning",ja:"あなたはもはや単に他人の意味を解読するだけでなく"},
+    {en:"but actively encoding your very own ideas,",ja:"自分自身のアイデアを積極的にエンコードしています、"},
+    {en:"which activates entirely different neural circuits",ja:"それは全く異なる神経回路を活性化し"},
+    {en:"and builds a far deeper personal relationship with the language.",ja:"その言語とはるかに深い個人的な関係を築きます。"},
+    {en:"The key is to lower the emotional stakes",ja:"鍵はハードルを下げることです"},
+    {en:"of every individual conversation you have.",ja:"あなたが行うすべての個別の会話の。"},
+    {en:"You do not need to be perfect.",ja:"完璧である必要はありません。"},
+    {en:"You simply need to be present, honest,",ja:"ただ現在にいて、誠実で、"},
+    {en:"and willing to laugh warmly",ja:"温かく笑える心を持ってください"},
+    {en:"at the inevitable misunderstandings that naturally arise.",ja:"自然に生じる避けられない誤解に対して。"},
+    {en:"Every stumble is a step forward,",ja:"すべてのつまずきは前進の一歩です、"},
+    {en:"and every genuine exchange",ja:"そしてすべての真の交流が"},
+    {en:"brings you closer to real fluency.",ja:"本当の流暢さへと近づけてくれます。"}
+  ]}
+];
+
+let rounds=[{sec:60},{sec:50},{sec:40},{sec:30},{sec:20},{sec:15},{sec:10}];
+let selPreset=0,selModeIdx=0,chunks=[];
+let curRound=0,paused=false;
+let roundStartTime=null,accumulatedTime=0,totalDuration=0;
+let finished=false,timerId=null;
+// タイプライター用
+let fullText='',displayedCount=0,totalChars=0;
+
+function selMode(i){selModeIdx=i;[0,1,2].forEach(j=>{document.getElementById('mc'+j).className='mc'+(j===i?' sel':'')+'';});}
+function showTab(t){
+  document.getElementById('ts').className='tab'+(t==='s'?' active':'');
+  document.getElementById('tp').className='tab'+(t==='p'?' active':'');
+  document.getElementById('panel-s').style.display=t==='s'?'block':'none';
+  document.getElementById('panel-p').style.display=t==='p'?'block':'none';
+}
+function buildPresets(){
+  const g=document.getElementById('pgrid');g.innerHTML='';
+  PRESETS.forEach((p,i)=>{
+    const c=document.createElement('div');c.className='pc'+(i===selPreset?' sel':'');
+    c.innerHTML='<p class="pt">'+p.title+'</p><p class="ps">'+p.sub+'</p>';
+    c.onclick=()=>{selPreset=i;buildPresets();renderSpeeds();};g.appendChild(c);
+  });
+}
+function renderSpeeds(){
+  const wc=PRESETS[selPreset].chunks.reduce((a,c)=>a+c.en.split(/\s+/).length,0);
+  const c=document.getElementById('srows');c.innerHTML='';
+  rounds.forEach((r,i)=>{
+    const wpm=Math.round(wc/(r.sec/60));
+    const d=document.createElement('div');d.className='sr';
+    d.innerHTML='<span class="sl">Round '+(i+1)+'</span><input type="number" min="1" max="999" value="'+r.sec+'" onchange="rounds['+ i +'].sec=Math.max(1,parseInt(this.value)||1);renderSpeeds()"><span class="sw">'+ wpm +' wpm</span><button class="rmb" onclick="removeRound('+ i +')">✕</button>';
+    c.appendChild(d);
+  });
+}
+function addRound(){const l=rounds[rounds.length-1];rounds.push({sec:Math.max(5,Math.round(l.sec*.75))});renderSpeeds();}
+function removeRound(i){if(rounds.length<=1)return;rounds.splice(i,1);renderSpeeds();}
+
+// テキスト構築：モードによって文字列を生成
+function buildFullText(){
+  const m=selModeIdx;
+  const c=PRESETS[selPreset].chunks;
+  if(m===0){
+    // 英文のみ：全チャンクをスペース区切りで連結
+    return c.map(ch=>ch.en).join(' ');
+  } else if(m===1){
+    // 日本語→英語：チャンクごとに日本語→改行→英語→改行
+    return c.map(ch=>ch.ja+'\n'+ch.en).join('\n');
+  } else {
+    // 同時：チャンクごとに日本語と英語を同時（交互に1文字ずつ）
+    // 実装：日本語行＋英語行をセットで表示
+    return c.map(ch=>ch.ja+'\n'+ch.en).join('\n');
+  }
+}
+
+function begin(){
+  chunks=PRESETS[selPreset].chunks;curRound=0;showTab('p');
+  document.getElementById('donebox').style.display='none';
+  document.getElementById('pbox').style.display='block';
+  buildDots();launchRound();
+}
+function buildDots(){
+  const c=document.getElementById('dotrow');c.innerHTML='';
+  rounds.forEach((_,i)=>{const d=document.createElement('div');d.className='dot';d.id='d'+i;c.appendChild(d);});
+}
+function updateDots(){rounds.forEach((_,i)=>{const d=document.getElementById('d'+i);if(!d)return;d.className='dot'+(i<curRound?' done':i===curRound?' on':'');});}
+
+function launchRound(){
+  if(timerId)clearInterval(timerId);
+  paused=false;finished=false;accumulatedTime=0;displayedCount=0;
+  roundStartTime=performance.now();
+  document.getElementById('pbtn').textContent='一時停止';
+
+  // テキスト構築
+  fullText=buildFullText();
+  totalChars=fullText.length;
+  totalDuration=rounds[curRound].sec*1000;
+
+  const wc=chunks.reduce((a,c)=>a+c.en.split(/\s+/).length,0);
+  document.getElementById('rlabel').textContent='Round '+(curRound+1)+' / '+rounds.length;
+  document.getElementById('rspd').textContent=rounds[curRound].sec+'秒 · '+wc+' words';
+  updateDots();
+
+  // 表示エリアをクリア
+  document.getElementById('tdisplay').innerHTML='<span class="cursor"></span>';
+  document.getElementById('pbar').style.width='0%';
+
+  // 先頭にスクロール
+  window.scrollTo({top:document.getElementById('pbox').offsetTop-10,behavior:'smooth'});
+
+  // タイプライタータイマー：1文字あたりのms
+  const msPerChar=totalDuration/totalChars;
+  timerId=setInterval(typeNextChar,Math.max(16,msPerChar));
+}
+
+function typeNextChar(){
+  if(paused||finished)return;
+  if(displayedCount>=totalChars){
+    clearInterval(timerId);
+    finished=true;
+    renderFull();
+    document.getElementById('pbar').style.width='100%';
+    setTimeout(()=>{
+      if(curRound<rounds.length-1){curRound++;launchRound();}else showDone();
+    },600);
+    return;
+  }
+
+  // 複数文字をまとめて表示（スピードが速い場合）
+  const elapsed=performance.now()-roundStartTime+accumulatedTime;
+  const targetCount=Math.floor((elapsed/totalDuration)*totalChars);
+  const toAdd=Math.min(targetCount-displayedCount, 10);
+  if(toAdd>0){
+    displayedCount=Math.min(displayedCount+toAdd, totalChars);
+  } else {
+    displayedCount=Math.min(displayedCount+1, totalChars);
+  }
+
+  renderDisplay();
+  const progress=displayedCount/totalChars;
+  document.getElementById('pbar').style.width=Math.round(progress*100)+'%';
+}
+
+function renderDisplay(){
+  const m=selModeIdx;
+  const shown=fullText.slice(0,displayedCount);
+
+  let html='';
+  if(m===0){
+    // 英文のみ：そのまま表示
+    html=escHtml(shown)+'<span class="cursor"></span>';
+  } else {
+    // 日本語→英語 / 同時：行ごとに色分け
+    const lines=shown.split('\n');
+    const totalLines=fullText.split('\n');
+    lines.forEach((line,li)=>{
+      const isJA=li%2===0; // 偶数行=日本語、奇数行=英語
+      const isLast=li===lines.length-1;
+      if(isJA){
+        html+='<span class="ja-line">'+escHtml(line)+(isLast?'<span class="cursor"></span>':'')+'</span>';
+      } else {
+        html+='<span class="en-line">'+escHtml(line)+(isLast?'<span class="cursor"></span>':'')+'</span>';
+      }
+    });
+  }
+  document.getElementById('tdisplay').innerHTML=html;
+}
+
+function renderFull(){
+  const m=selModeIdx;
+  let html='';
+  if(m===0){
+    html=escHtml(fullText);
+  } else {
+    const lines=fullText.split('\n');
+    lines.forEach((line,li)=>{
+      const isJA=li%2===0;
+      html+=isJA
+        ?'<span class="ja-line">'+escHtml(line)+'</span>'
+        :'<span class="en-line">'+escHtml(line)+'</span>';
+    });
+  }
+  document.getElementById('tdisplay').innerHTML=html;
+}
+
+function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function togglePause(){
+  if(!paused){
+    paused=true;
+    accumulatedTime+=performance.now()-roundStartTime;
+    document.getElementById('pbtn').textContent='再開';
+  } else {
+    paused=false;
+    roundStartTime=performance.now();
+    document.getElementById('pbtn').textContent='一時停止';
+  }
+}
+function skipRound(){
+  if(timerId)clearInterval(timerId);
+  if(curRound<rounds.length-1){curRound++;launchRound();}else showDone();
+}
+function stopAll(){if(timerId)clearInterval(timerId);showTab('s');}
+function showDone(){
+  if(timerId)clearInterval(timerId);updateDots();
+  document.getElementById('pbox').style.display='none';
+  document.getElementById('donebox').style.display='block';
+  const wc=chunks.reduce((a,c)=>a+c.en.split(/\s+/).length,0);
+  document.getElementById('donesub').textContent=rounds.length+'ラウンド完了！最終スピード '+rounds[rounds.length-1].sec+'秒 / '+wc+' words';
+}
+function restart(){
+  document.getElementById('donebox').style.display='none';
+  document.getElementById('pbox').style.display='block';
+  curRound=0;buildDots();launchRound();
+}
+
+buildPresets();renderSpeeds();
+</script>
+</body>
+</html>
